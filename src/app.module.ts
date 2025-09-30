@@ -1,10 +1,84 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
+import { DataSource } from 'typeorm';
+
+// TODO: import your feature modules here
+import { CustomerModule } from './customer/customer.module';
+import { VehicleModule } from './vehicle/vehicle.module';
+import { WorkshopModule } from './workshop/workshop.module';
+import { MechanicModule } from './mechanic/mechanic.module';
+import { ServiceModule } from './service/service.module';
+import { AppointmentModule } from './appointment/appointment.module';
+import { WorkOrderModule } from './work-order/work-order.module';
+import { RepairModule } from './repair/repair.module';
+import { MechanicWorkshopModule } from './mechanic-workshop/mechanic-workshop.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    // Env vars
+    ConfigModule.forRoot({ isGlobal: true }),
+
+    // TypeORM (MySQL)
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        type: 'mysql',
+        host: config.get<string>('DB_HOST'),
+        port: config.get<number>('DB_PORT'),
+        username: config.get<string>('DB_USERNAME'),
+        password: config.get<string>('DB_PASSWORD'),
+        database: config.get<string>('DB_NAME'),
+        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        synchronize: true, // en dev; en prod usar migrations
+        retryAttempts: 3,
+        retryDelay: 2000,
+      }),
+    }),
+
+    // Rate limiting
+    ThrottlerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        throttlers: [
+          {
+            ttl: config.get<number>('THROTTLE_TTL', 60000),
+            limit: config.get<number>('THROTTLE_LIMIT', 10),
+          },
+        ],
+      }),
+    }),
+
+    // Feature modules
+    CustomerModule,
+
+    VehicleModule,
+
+    WorkshopModule,
+
+    MechanicModule,
+
+    ServiceModule,
+
+    AppointmentModule,
+
+    WorkOrderModule,
+
+    RepairModule,
+
+    MechanicWorkshopModule,
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private readonly dataSource: DataSource) {}
+}
