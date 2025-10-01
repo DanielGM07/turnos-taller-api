@@ -15,6 +15,7 @@ import { AppointmentModule } from './appointment/appointment.module';
 import { WorkOrderModule } from './work-order/work-order.module';
 import { RepairModule } from './repair/repair.module';
 import { AdminModule } from './admin/admin.module';
+import { MechanicReviewModule } from './mechanic-review/mechanic-review.module';
 
 @Module({
   imports: [
@@ -71,6 +72,8 @@ import { AdminModule } from './admin/admin.module';
     RepairModule,
 
     AdminModule,
+
+    MechanicReviewModule,
   ],
   providers: [
     {

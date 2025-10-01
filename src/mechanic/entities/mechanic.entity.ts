@@ -41,6 +41,12 @@ export class Mechanic {
   })
   workshops: Workshop[];
 
+  @Column({ type: 'decimal', precision: 2, scale: 1, default: 0 })
+  average_rating: string; // 0.0–5.0
+
+  @Column({ type: 'int', default: 0 })
+  ratings_count: number;
+
   @CreateDateColumn() created_at: Date;
   @UpdateDateColumn() updated_at: Date;
   @DeleteDateColumn() deleted_at?: Date;
