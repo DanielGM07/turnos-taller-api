@@ -9,8 +9,7 @@ import {
 
 @Entity()
 export class ServiceEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn('uuid') id: string;
 
   @Column() name: string;
   @Column({ type: 'text', nullable: true }) description: string;

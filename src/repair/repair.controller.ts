@@ -1,34 +1,32 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { RepairService } from './repair.service';
 import { CreateRepairDto } from './dto/create-repair.dto';
 import { UpdateRepairDto } from './dto/update-repair.dto';
 
-@Controller('repair')
+@Controller('repairs')
 export class RepairController {
-  constructor(private readonly repairService: RepairService) {}
-
-  @Post()
-  create(@Body() createRepairDto: CreateRepairDto) {
-    return this.repairService.create(createRepairDto);
+  constructor(private readonly service: RepairService) {}
+  @Post() create(@Body() dto: CreateRepairDto) {
+    return this.service.create(dto);
   }
-
-  @Get()
-  findAll() {
-    return this.repairService.findAll();
+  @Get() findAll() {
+    return this.service.findAll();
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.repairService.findOne(+id);
+  @Get(':id') findOne(@Param('id') id: string) {
+    return this.service.findOne(id);
   }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRepairDto: UpdateRepairDto) {
-    return this.repairService.update(+id, updateRepairDto);
+  @Patch(':id') update(@Param('id') id: string, @Body() dto: UpdateRepairDto) {
+    return this.service.update(id, dto);
   }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.repairService.remove(+id);
+  @Delete(':id') remove(@Param('id') id: string) {
+    return this.service.remove(id);
   }
 }

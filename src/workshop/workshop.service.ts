@@ -1,26 +1,71 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Workshop } from './entities/workshop.entity';
 import { CreateWorkshopDto } from './dto/create-workshop.dto';
 import { UpdateWorkshopDto } from './dto/update-workshop.dto';
 
 @Injectable()
 export class WorkshopService {
-  create(createWorkshopDto: CreateWorkshopDto) {
-    return 'This action adds a new workshop';
+  constructor(
+    @InjectRepository(Workshop) private readonly repo: Repository<Workshop>,
+  ) {}
+
+  async create(dto: CreateWorkshopDto): Promise<Workshop> {
+    try {
+      return await this.repo.save(this.repo.create(dto));
+    } catch (error) {
+      throw error;
+    }
   }
 
-  findAll() {
-    return `This action returns all workshop`;
+  async findAll(): Promise<Workshop[]> {
+    try {
+      return await this.repo.find({ relations: ['mechanics'] });
+    } catch (error) {
+      throw error;
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} workshop`;
+  async findOne(id: string): Promise<Workshop> {
+    try {
+      const found = await this.repo.findOne({
+        where: { id },
+        relations: ['mechanics'],
+      });
+      if (!found)
+        throw new NotFoundException(`Workshop with ID ${id} not found.`);
+      return found;
+    } catch (error) {
+      throw error;
+    }
   }
 
-  update(id: number, updateWorkshopDto: UpdateWorkshopDto) {
-    return `This action updates a #${id} workshop`;
+  async update(id: string, dto: UpdateWorkshopDto): Promise<Workshop> {
+    try {
+      const result = await this.repo.update(id, dto);
+      if (!result.affected)
+        throw new NotFoundException(`Workshop with ID ${id} not found.`);
+      const updated = await this.repo.findOne({
+        where: { id },
+        relations: ['mechanics'],
+      });
+      if (!updated)
+        throw new NotFoundException(`Workshop with ID ${id} not found.`);
+      return updated;
+    } catch (error) {
+      throw error;
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} workshop`;
+  async remove(id: string): Promise<{ message: string }> {
+    try {
+      const res = await this.repo.softDelete({ id });
+      if (!res.affected)
+        throw new NotFoundException(`Workshop with ID ${id} not found.`);
+      return { message: `Workshop with ID ${id} successfully deleted.` };
+    } catch (error) {
+      throw error;
+    }
   }
 }

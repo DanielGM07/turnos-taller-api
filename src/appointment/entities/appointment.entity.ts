@@ -66,13 +66,12 @@ export class Appointment {
   @Column()
   scheduled_at: Date;
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ nullable: true })
   notes?: string;
 
   @Column({
     type: 'enum',
     enum: AppointmentStatus,
-    default: AppointmentStatus.PENDING,
   })
   status: AppointmentStatus;
 

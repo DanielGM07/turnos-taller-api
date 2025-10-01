@@ -14,7 +14,7 @@ import { ServiceModule } from './service/service.module';
 import { AppointmentModule } from './appointment/appointment.module';
 import { WorkOrderModule } from './work-order/work-order.module';
 import { RepairModule } from './repair/repair.module';
-import { MechanicWorkshopModule } from './mechanic-workshop/mechanic-workshop.module';
+import { AdminModule } from './admin/admin.module';
 
 @Module({
   imports: [
@@ -70,7 +70,7 @@ import { MechanicWorkshopModule } from './mechanic-workshop/mechanic-workshop.mo
 
     RepairModule,
 
-    MechanicWorkshopModule,
+    AdminModule,
   ],
   providers: [
     {

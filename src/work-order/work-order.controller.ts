@@ -1,34 +1,35 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { WorkOrderService } from './work-order.service';
 import { CreateWorkOrderDto } from './dto/create-work-order.dto';
 import { UpdateWorkOrderDto } from './dto/update-work-order.dto';
 
-@Controller('work-order')
+@Controller('work-orders')
 export class WorkOrderController {
-  constructor(private readonly workOrderService: WorkOrderService) {}
-
-  @Post()
-  create(@Body() createWorkOrderDto: CreateWorkOrderDto) {
-    return this.workOrderService.create(createWorkOrderDto);
+  constructor(private readonly service: WorkOrderService) {}
+  @Post() create(@Body() dto: CreateWorkOrderDto) {
+    return this.service.create(dto);
   }
-
-  @Get()
-  findAll() {
-    return this.workOrderService.findAll();
+  @Get() findAll() {
+    return this.service.findAll();
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.workOrderService.findOne(+id);
+  @Get(':id') findOne(@Param('id') id: string) {
+    return this.service.findOne(id);
   }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateWorkOrderDto: UpdateWorkOrderDto) {
-    return this.workOrderService.update(+id, updateWorkOrderDto);
+  @Patch(':id') update(
+    @Param('id') id: string,
+    @Body() dto: UpdateWorkOrderDto,
+  ) {
+    return this.service.update(id, dto);
   }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.workOrderService.remove(+id);
+  @Delete(':id') remove(@Param('id') id: string) {
+    return this.service.remove(id);
   }
 }

@@ -30,7 +30,7 @@ export class CreateAppointmentDto {
   workshop_id: string;
 
   @IsDateString()
-  scheduled_at: Date; // ISO
+  scheduled_at: string; // ISO
 
   @IsOptional()
   @IsString()
