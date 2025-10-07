@@ -16,27 +16,27 @@ export class VehicleController {
   constructor(private readonly vehicleService: VehicleService) {}
 
   @Post()
-  create(@Body() createVehicleDto: CreateVehicleDto) {
-    return this.vehicleService.create(createVehicleDto);
+  async create(@Body() dto: CreateVehicleDto) {
+    return await this.vehicleService.create(dto);
   }
 
   @Get()
-  findAll() {
-    return this.vehicleService.findAll();
+  async findAll() {
+    return await this.vehicleService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.vehicleService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    return await this.vehicleService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVehicleDto: UpdateVehicleDto) {
-    return this.vehicleService.update(id, updateVehicleDto);
+  async update(@Param('id') id: string, @Body() dto: UpdateVehicleDto) {
+    return await this.vehicleService.update(id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.vehicleService.remove(id);
+  async remove(@Param('id') id: string) {
+    return await this.vehicleService.remove(id);
   }
 }

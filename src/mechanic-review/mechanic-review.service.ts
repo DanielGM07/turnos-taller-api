@@ -12,7 +12,8 @@ export class MechanicReviewService {
   constructor(
     @InjectRepository(MechanicReview)
     private readonly repo: Repository<MechanicReview>,
-    @InjectRepository(Mechanic) private readonly mechRepo: Repository<Mechanic>,
+    @InjectRepository(Mechanic)
+    private readonly mechRepo: Repository<Mechanic>,
   ) {}
 
   async create(dto: CreateMechanicReviewDto): Promise<MechanicReview> {
@@ -29,6 +30,32 @@ export class MechanicReviewService {
       const saved = await this.repo.save(entity);
       await this.recalculateAggregates(dto.mechanic_id);
       return saved;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // NEW
+  async findAll(): Promise<MechanicReview[]> {
+    try {
+      return await this.repo.find({
+        relations: ['mechanic', 'customer', 'appointment'],
+        order: { created_at: 'DESC' as any },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // NEW
+  async findOne(id: string): Promise<MechanicReview> {
+    try {
+      const review = await this.repo.findOne({
+        where: { id },
+        relations: ['mechanic', 'customer', 'appointment'],
+      });
+      if (!review) throw new NotFoundException(`Review ${id} not found.`);
+      return review;
     } catch (error) {
       throw error;
     }

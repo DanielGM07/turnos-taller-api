@@ -13,30 +13,30 @@ import { UpdateAppointmentDto } from './dto/update-appointment.dto';
 
 @Controller('appointment')
 export class AppointmentController {
-  constructor(private readonly service: AppointmentService) {}
+  constructor(private readonly appointmentService: AppointmentService) {}
 
   @Post()
-  create(@Body() dto: CreateAppointmentDto) {
-    return this.service.create(dto);
+  async create(@Body() dto: CreateAppointmentDto) {
+    return await this.appointmentService.create(dto);
   }
 
   @Get()
-  findAll() {
-    return this.service.findAll();
+  async findAll() {
+    return await this.appointmentService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.service.findOne(id);
+  async findOne(@Param('id') id: string) {
+    return await this.appointmentService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateAppointmentDto) {
-    return this.service.update(id, dto);
+  async update(@Param('id') id: string, @Body() dto: UpdateAppointmentDto) {
+    return await this.appointmentService.update(id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.service.remove(id);
+  async remove(@Param('id') id: string) {
+    return await this.appointmentService.remove(id);
   }
 }

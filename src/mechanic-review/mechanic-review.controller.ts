@@ -1,5 +1,12 @@
-// mechanic-review/mechanic-review.controller.ts
-import { Controller, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { MechanicReviewService } from './mechanic-review.service';
 import { CreateMechanicReviewDto } from './dto/create-mechanic-review.dto';
 import { UpdateMechanicReviewDto } from './dto/update-mechanic-review.dto';
@@ -8,16 +15,28 @@ import { UpdateMechanicReviewDto } from './dto/update-mechanic-review.dto';
 export class MechanicReviewController {
   constructor(private readonly service: MechanicReviewService) {}
 
-  @Post() create(@Body() dto: CreateMechanicReviewDto) {
-    return this.service.create(dto);
+  @Post()
+  async create(@Body() dto: CreateMechanicReviewDto) {
+    return await this.service.create(dto);
   }
-  @Patch(':id') update(
-    @Param('id') id: string,
-    @Body() dto: UpdateMechanicReviewDto,
-  ) {
-    return this.service.update(id, dto);
+
+  @Get()
+  async findAll() {
+    return await this.service.findAll();
   }
-  @Delete(':id') remove(@Param('id') id: string) {
-    return this.service.remove(id);
+
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    return await this.service.findOne(id);
+  }
+
+  @Patch(':id')
+  async update(@Param('id') id: string, @Body() dto: UpdateMechanicReviewDto) {
+    return await this.service.update(id, dto);
+  }
+
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    return await this.service.remove(id);
   }
 }

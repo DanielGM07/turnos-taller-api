@@ -16,27 +16,27 @@ export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
   @Post()
-  create(@Body() createAdminDto: CreateAdminDto) {
-    return this.adminService.create(createAdminDto);
+  async create(@Body() dto: CreateAdminDto) {
+    return await this.adminService.create(dto);
   }
 
   @Get()
-  findAll() {
-    return this.adminService.findAll();
+  async findAll() {
+    return await this.adminService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.adminService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    return await this.adminService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAdminDto: UpdateAdminDto) {
-    return this.adminService.update(id, updateAdminDto);
+  async update(@Param('id') id: string, @Body() dto: UpdateAdminDto) {
+    return await this.adminService.update(id, dto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.adminService.remove(id);
+  async remove(@Param('id') id: string) {
+    return await this.adminService.remove(id);
   }
 }

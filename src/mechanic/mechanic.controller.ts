@@ -15,38 +15,45 @@ import { UpdateMechanicDto } from './dto/update-mechanic.dto';
 export class MechanicController {
   constructor(private readonly service: MechanicService) {}
 
-  @Post() create(@Body() dto: CreateMechanicDto) {
-    return this.service.create(dto);
-  }
-  @Get() findAll() {
-    return this.service.findAll();
-  }
-  @Get(':id') findOne(@Param('id') id: string) {
-    return this.service.findOne(id);
-  }
-  @Patch(':id') update(
-    @Param('id') id: string,
-    @Body() dto: UpdateMechanicDto,
-  ) {
-    return this.service.update(id, dto);
-  }
-  @Delete(':id') remove(@Param('id') id: string) {
-    return this.service.remove(id);
+  @Post()
+  async create(@Body() dto: CreateMechanicDto) {
+    return await this.service.create(dto);
   }
 
-  // Endpoints opcionales para vincular/desvincular talleres (manejan la N–N implícita)
-  @Post(':mechanicId/workshops/:workshopId')
-  linkWorkshop(
-    @Param('mechanicId') mechanicId: string,
-    @Param('workshopId') workshopId: string,
-  ) {
-    return this.service.linkWorkshop(mechanicId, workshopId);
+  @Get()
+  async findAll() {
+    return await this.service.findAll();
   }
-  @Delete(':mechanicId/workshops/:workshopId')
-  unlinkWorkshop(
+
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    return await this.service.findOne(id);
+  }
+
+  @Patch(':id')
+  async update(@Param('id') id: string, @Body() dto: UpdateMechanicDto) {
+    return await this.service.update(id, dto);
+  }
+
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    return await this.service.remove(id);
+  }
+
+  // Endpoints opcionales para manejar relación N–N con talleres
+  @Post(':mechanicId/workshops/:workshopId')
+  async linkWorkshop(
     @Param('mechanicId') mechanicId: string,
     @Param('workshopId') workshopId: string,
   ) {
-    return this.service.unlinkWorkshop(mechanicId, workshopId);
+    return await this.service.linkWorkshop(mechanicId, workshopId);
+  }
+
+  @Delete(':mechanicId/workshops/:workshopId')
+  async unlinkWorkshop(
+    @Param('mechanicId') mechanicId: string,
+    @Param('workshopId') workshopId: string,
+  ) {
+    return await this.service.unlinkWorkshop(mechanicId, workshopId);
   }
 }

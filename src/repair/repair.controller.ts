@@ -14,19 +14,29 @@ import { UpdateRepairDto } from './dto/update-repair.dto';
 @Controller('repairs')
 export class RepairController {
   constructor(private readonly service: RepairService) {}
-  @Post() create(@Body() dto: CreateRepairDto) {
-    return this.service.create(dto);
+
+  @Post()
+  async create(@Body() dto: CreateRepairDto) {
+    return await this.service.create(dto);
   }
-  @Get() findAll() {
-    return this.service.findAll();
+
+  @Get()
+  async findAll() {
+    return await this.service.findAll();
   }
-  @Get(':id') findOne(@Param('id') id: string) {
-    return this.service.findOne(id);
+
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    return await this.service.findOne(id);
   }
-  @Patch(':id') update(@Param('id') id: string, @Body() dto: UpdateRepairDto) {
-    return this.service.update(id, dto);
+
+  @Patch(':id')
+  async update(@Param('id') id: string, @Body() dto: UpdateRepairDto) {
+    return await this.service.update(id, dto);
   }
-  @Delete(':id') remove(@Param('id') id: string) {
-    return this.service.remove(id);
+
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    return await this.service.remove(id);
   }
 }
