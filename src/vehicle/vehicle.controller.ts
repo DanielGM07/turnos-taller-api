@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { VehicleService } from './vehicle.service';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
@@ -38,5 +39,16 @@ export class VehicleController {
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return await this.vehicleService.remove(id);
+  }
+
+  // ⬇️ NEW
+  @Get(':id/repairs')
+  async listRepairs(
+    @Param('id') vehicleId: string,
+    @Query('customerId') customerId?: string,
+  ) {
+    return await this.vehicleService.listRepairsByVehicle(vehicleId, {
+      customerId,
+    });
   }
 }
