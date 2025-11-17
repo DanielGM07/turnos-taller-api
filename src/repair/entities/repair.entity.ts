@@ -17,16 +17,23 @@ export class Repair {
   @PrimaryGeneratedColumn('uuid') id: string;
 
   @ManyToOne(() => Vehicle) @JoinColumn() vehicle: Vehicle;
+
   @ManyToOne(() => ServiceEntity)
   @JoinColumn()
   service: ServiceEntity;
+
   @ManyToOne(() => Appointment)
   @JoinColumn()
   appointment?: Appointment;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 }) final_price: string;
 
-  @CreateDateColumn() created_at: Date;
-  @UpdateDateColumn() updated_at: Date;
-  @DeleteDateColumn() deleted_at?: Date;
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at?: Date;
 }

@@ -19,9 +19,14 @@ export enum MechanicStatus {
 export class Mechanic {
   @PrimaryGeneratedColumn('uuid') id: string;
 
-  @Column() first_name: string;
-  @Column() last_name: string;
-  @Column() birth_date: Date;
+  @Column()
+  first_name: string;
+
+  @Column()
+  last_name: string;
+
+  @Column()
+  birth_date: Date;
 
   @Column({ type: 'simple-array', nullable: true })
   specialties: string[]; // e.g. "Suspensión,Frenos"
@@ -47,7 +52,12 @@ export class Mechanic {
   @Column({ type: 'int', default: 0 })
   ratings_count: number;
 
-  @CreateDateColumn() created_at: Date;
-  @UpdateDateColumn() updated_at: Date;
-  @DeleteDateColumn() deleted_at?: Date;
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at?: Date;
 }

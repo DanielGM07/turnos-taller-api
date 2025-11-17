@@ -61,6 +61,7 @@ export class CustomerService {
     private readonly workshopRepository: Repository<Workshop>,
 
     private readonly mechanicReviewService: MechanicReviewService,
+
     private readonly vehicleService: VehicleService,
 
     private readonly domain: CustomerDomain,

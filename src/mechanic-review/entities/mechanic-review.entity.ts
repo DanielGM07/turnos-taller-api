@@ -37,7 +37,12 @@ export class MechanicReview {
   @Column({ type: 'text', nullable: true })
   comment?: string;
 
-  @CreateDateColumn() created_at: Date;
-  @UpdateDateColumn() updated_at: Date;
-  @DeleteDateColumn() deleted_at?: Date;
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at?: Date;
 }

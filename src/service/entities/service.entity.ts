@@ -11,8 +11,11 @@ import {
 export class ServiceEntity {
   @PrimaryGeneratedColumn('uuid') id: string;
 
-  @Column() name: string;
-  @Column({ type: 'text', nullable: true }) description: string;
+  @Column()
+  name: string;
+
+  @Column({ type: 'text', nullable: true })
+  description: string;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   min_price: string;
@@ -20,7 +23,12 @@ export class ServiceEntity {
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   max_price: string;
 
-  @CreateDateColumn() created_at: Date;
-  @UpdateDateColumn() updated_at: Date;
-  @DeleteDateColumn() deleted_at?: Date;
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_at?: Date;
 }
