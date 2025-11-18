@@ -70,6 +70,12 @@ export class CustomerController {
     return await this.customerService.findAll();
   }
 
+  @Get('services')
+  @ApiOperation({ summary: CUSTOMER_SWAGGER.SERVICES.LIST.SUMMARY })
+  async listServices() {
+    return await this.customerService.listServices();
+  }
+
   @Get(':id')
   @ApiOperation({ summary: CUSTOMER_SWAGGER.FIND_ONE.SUMMARY })
   async findOne(@Param('id', ParseUUIDPipe) id: string) {
@@ -196,25 +202,25 @@ export class CustomerController {
 
   // ===== Services (Servicios disponibles) =====
 
-  @Get('services')
-  @ApiOperation({ summary: CUSTOMER_SWAGGER.SERVICES.LIST.SUMMARY })
-  async listServices() {
-    return await this.customerService.listServices();
-  }
+  // @Get('services')
+  // @ApiOperation({ summary: CUSTOMER_SWAGGER.SERVICES.LIST.SUMMARY })
+  // async listServices() {
+  //   return await this.customerService.listServices();
+  // }
 
   // ===== Repairs (Reparaciones del cliente) =====
 
-  @Get(':customerId/vehicles/:vehicleId/repairs')
-  @ApiOperation({ summary: 'Listar reparaciones de un vehículo del cliente' })
-  async listVehicleRepairsForCustomer(
-    @Param('customerId', ParseUUIDPipe) customerId: string,
-    @Param('vehicleId', ParseUUIDPipe) vehicleId: string,
-  ) {
-    return await this.customerService.listRepairsForCustomerVehicle(
-      customerId,
-      vehicleId,
-    );
-  }
+  // @Get(':customerId/vehicles/:vehicleId/repairs')
+  // @ApiOperation({ summary: 'Listar reparaciones de un vehículo del cliente' })
+  // async listVehicleRepairsForCustomer(
+  //   @Param('customerId', ParseUUIDPipe) customerId: string,
+  //   @Param('vehicleId', ParseUUIDPipe) vehicleId: string,
+  // ) {
+  //   return await this.customerService.listRepairsForCustomerVehicle(
+  //     customerId,
+  //     vehicleId,
+  //   );
+  // }
 
   // ===== Reviews (Calificar mecánico) =====
 

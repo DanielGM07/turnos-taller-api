@@ -16,7 +16,6 @@ import { Vehicle } from '../vehicle/entities/vehicle.entity';
 import { ServiceEntity } from '../service/entities/service.entity';
 import { MechanicReview } from '../mechanic-review/entities/mechanic-review.entity';
 import { Mechanic } from '../mechanic/entities/mechanic.entity';
-import { Repair } from '../repair/entities/repair.entity';
 import { Workshop } from '../workshop/entities/workshop.entity';
 
 // Dtos externos
@@ -53,9 +52,6 @@ export class CustomerService {
 
     @InjectRepository(Mechanic)
     private readonly mechanicRepository: Repository<Mechanic>,
-
-    @InjectRepository(Repair)
-    private readonly repairRepository: Repository<Repair>,
 
     @InjectRepository(Workshop)
     private readonly workshopRepository: Repository<Workshop>,
@@ -273,14 +269,14 @@ export class CustomerService {
   }
 
   // ===== Repairs (Reparaciones del cliente) =====
-  async listRepairsForCustomerVehicle(
-    customerId: string,
-    vehicleId: string,
-  ): Promise<Repair[]> {
-    return await this.vehicleService.listRepairsByVehicle(vehicleId, {
-      customerId,
-    });
-  }
+  // async listRepairsForCustomerVehicle(
+  //   customerId: string,
+  //   vehicleId: string,
+  // ): Promise<Repair[]> {
+  //   return await this.vehicleService.listRepairsByVehicle(vehicleId, {
+  //     customerId,
+  //   });
+  // }
 
   // ===== Reviews (Calificar mecánico) — (dejamos validaciones I/O + service existente) =====
   async rateMechanic(

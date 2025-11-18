@@ -10,7 +10,6 @@ import { Appointment } from 'src/appointment/entities/appointment.entity';
 import { Vehicle } from 'src/vehicle/entities/vehicle.entity';
 import { MechanicReview } from 'src/mechanic-review/entities/mechanic-review.entity';
 import { Mechanic } from 'src/mechanic/entities/mechanic.entity';
-import { Repair } from 'src/repair/entities/repair.entity';
 
 // módulos que exportan los services que inyectás en CustomerService
 import { VehicleModule } from 'src/vehicle/vehicle.module';
@@ -28,7 +27,6 @@ import { CustomerDomain } from './domain/customer.domain';
       Vehicle,
       MechanicReview,
       Mechanic,
-      Repair,
       Workshop,
     ]),
 

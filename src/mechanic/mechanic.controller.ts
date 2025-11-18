@@ -28,6 +28,11 @@ export class MechanicController {
     return await this.mechanicService.findAll();
   }
 
+  @Get('workshops')
+  async listAllWorkshops() {
+    return await this.mechanicService.listAllWorkshops();
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.mechanicService.findOne(id);
@@ -110,10 +115,10 @@ export class MechanicController {
 
   // === Workshops (talleres) ===
 
-  @Get('workshops')
-  async listAllWorkshops() {
-    return await this.mechanicService.listAllWorkshops();
-  }
+  // @Get('workshops')
+  // async listAllWorkshops() {
+  //   return await this.mechanicService.listAllWorkshops();
+  // }
 
   @Get(':mechanicId/workshops')
   async listMyWorkshops(

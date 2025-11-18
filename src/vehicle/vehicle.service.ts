@@ -9,15 +9,12 @@ import { Repository } from 'typeorm';
 import { Vehicle } from './entities/vehicle.entity';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
-import { Repair } from 'src/repair/entities/repair.entity';
 import { error } from 'console';
 
 @Injectable()
 export class VehicleService {
   constructor(
     @InjectRepository(Vehicle) private readonly repo: Repository<Vehicle>,
-
-    @InjectRepository(Repair) private readonly repairRepo: Repository<Repair>,
   ) {}
 
   async create(dto: CreateVehicleDto): Promise<Vehicle> {
@@ -74,36 +71,5 @@ export class VehicleService {
     } catch (error) {
       throw error;
     }
-  }
-
-  async listRepairsByVehicle(
-    vehicleId: string,
-    opts?: { customerId?: string },
-  ): Promise<Repair[]> {
-    // Traemos el vehículo con su customer para validar pertenencia si hace falta
-    const vehicle = await this.repo.findOne({
-      where: { id: vehicleId },
-      relations: ['customer'],
-    });
-    if (!vehicle) {
-      throw new NotFoundException(`Vehicle with ID ${vehicleId} not found.`);
-    }
-
-    if (opts?.customerId && vehicle.customer?.id !== opts.customerId) {
-      throw error;
-    }
-
-    // Buscamos repairs por relación vehicle
-    return await this.repairRepo.find({
-      where: { vehicle: { id: vehicleId } as any },
-      relations: [
-        'vehicle',
-        'service',
-        'appointment',
-        'appointment.mechanic',
-        'appointment.workshop',
-      ],
-      order: { created_at: 'DESC' as any },
-    });
   }
 }

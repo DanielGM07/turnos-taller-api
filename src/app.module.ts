@@ -12,8 +12,6 @@ import { WorkshopModule } from './workshop/workshop.module';
 import { MechanicModule } from './mechanic/mechanic.module';
 import { ServiceModule } from './service/service.module';
 import { AppointmentModule } from './appointment/appointment.module';
-import { WorkOrderModule } from './work-order/work-order.module';
-import { RepairModule } from './repair/repair.module';
 import { AdminModule } from './admin/admin.module';
 import { MechanicReviewModule } from './mechanic-review/mechanic-review.module';
 
@@ -66,10 +64,6 @@ import { MechanicReviewModule } from './mechanic-review/mechanic-review.module';
     ServiceModule,
 
     AppointmentModule,
-
-    WorkOrderModule,
-
-    RepairModule,
 
     AdminModule,
 
