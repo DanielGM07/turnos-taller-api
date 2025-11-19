@@ -19,9 +19,19 @@ import { CreateWorkshopDto } from 'src/workshop/dto/create-workshop.dto';
 export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
+  @Get('workshops')
+  async listWorkshops() {
+    return await this.adminService.listWorkshops();
+  }
+
   @Post()
   async create(@Body() dto: CreateAdminDto) {
     return await this.adminService.create(dto);
+  }
+
+  @Get('dashboard')
+  async getDashboard() {
+    return await this.adminService.getDashboardStats();
   }
 
   @Get()
@@ -50,10 +60,10 @@ export class AdminController {
     return await this.adminService.createWorkshop(dto);
   }
 
-  @Get('workshops')
-  async listWorkshops() {
-    return await this.adminService.listWorkshops();
-  }
+  // @Get('workshops')
+  // async listWorkshops() {
+  //   return await this.adminService.listWorkshops();
+  // }
 
   @Get('workshops/:workshopId')
   async getWorkshop(@Param('workshopId', ParseUUIDPipe) workshopId: string) {
@@ -95,5 +105,18 @@ export class AdminController {
   @Delete('mechanics/:mechanicId')
   async deleteMechanic(@Param('mechanicId', ParseUUIDPipe) mechanicId: string) {
     return await this.adminService.deleteMechanic(mechanicId);
+  }
+
+  // ===== APPOINTMENTS DE UN TALLER (solo lectura admin) =====
+  @Get('workshops/:workshopId/appointments')
+  async listWorkshopAppointments(
+    @Param('workshopId', ParseUUIDPipe) workshopId: string,
+  ) {
+    return await this.adminService.listWorkshopAppointments(workshopId);
+  }
+
+  @Get('mechanics/:mechanicId/reviews')
+  async listMechanicReviews(@Param('mechanicId') mechanicId: string) {
+    return this.adminService.listMechanicReviews(mechanicId);
   }
 }
