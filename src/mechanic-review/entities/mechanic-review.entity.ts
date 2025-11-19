@@ -32,7 +32,7 @@ export class MechanicReview {
   appointment?: Appointment; // opcional pero recomendable
 
   @Column({ type: 'int' })
-  rating: number; // 1–5
+  rating: number; // 1–10
 
   @Column({ type: 'text', nullable: true })
   comment?: string;

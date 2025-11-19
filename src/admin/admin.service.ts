@@ -46,20 +46,33 @@ export class AdminService {
     }
   }
 
-  async update(id: string, updateAdminDto: UpdateAdminDto): Promise<Admin> {
-    try {
-      const result = await this.adminRepository.update(id, updateAdminDto);
-      if (result.affected === 0)
-        throw new NotFoundException(`Admin with ID ${id} not found`);
-      const admin = await this.adminRepository.findOneBy({ id });
-      if (!admin)
-        throw new NotFoundException(
-          `Admin with ID ${id} not found after update`,
-        );
-      return admin;
-    } catch (error) {
-      throw error;
-    }
+  // async update(id: string, updateAdminDto: UpdateAdminDto): Promise<Admin> {
+  //   try {
+  //     const result = await this.adminRepository.update(id, updateAdminDto);
+  //     if (result.affected === 0)
+  //       throw new NotFoundException(`Admin with ID ${id} not found`);
+  //     const admin = await this.adminRepository.findOneBy({ id });
+  //     if (!admin)
+  //       throw new NotFoundException(
+  //         `Admin with ID ${id} not found after update`,
+  //       );
+  //     return admin;
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
+
+  async update(id: string, dto: any) {
+    const admin = await this.adminRepository.findOne({
+      where: { id },
+      select: ['id', 'password'], // importante para poder reasignar password
+    });
+
+    if (!admin) throw new NotFoundException('Admin not found');
+
+    Object.assign(admin, dto);
+
+    return await this.adminRepository.save(admin); // ejecuta BeforeUpdate()
   }
 
   async remove(id: string): Promise<{ message: string }> {

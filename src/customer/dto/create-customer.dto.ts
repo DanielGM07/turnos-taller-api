@@ -29,4 +29,9 @@ export class CreateCustomerDto {
   @IsEmail()
   @Length(3, 120)
   email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @Length(8, 128)
+  password: string;
 }

@@ -79,12 +79,25 @@ export class CustomerService {
     return customer;
   }
 
-  async update(id: string, dto: UpdateCustomerDto): Promise<Customer> {
-    const res = await this.customerRepository.update(id, dto);
-    if (!res.affected) throw new NotFoundException(`Customer ${id} not found`);
-    const updated = await this.customerRepository.findOneBy({ id });
-    if (!updated) throw new NotFoundException(`Customer ${id} not found`);
-    return updated;
+  // async update(id: string, dto: UpdateCustomerDto): Promise<Customer> {
+  //   const res = await this.customerRepository.update(id, dto);
+  //   if (!res.affected) throw new NotFoundException(`Customer ${id} not found`);
+  //   const updated = await this.customerRepository.findOneBy({ id });
+  //   if (!updated) throw new NotFoundException(`Customer ${id} not found`);
+  //   return updated;
+  // }
+
+  async update(id: string, dto: any) {
+    const customer = await this.customerRepository.findOne({
+      where: { id },
+      select: ['id', 'password'],
+    });
+
+    if (!customer) throw new NotFoundException('Customer not found');
+
+    Object.assign(customer, dto);
+
+    return await this.customerRepository.save(customer);
   }
 
   async remove(id: string): Promise<{ message: string }> {

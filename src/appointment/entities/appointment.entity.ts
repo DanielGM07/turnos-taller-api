@@ -75,6 +75,14 @@ export class Appointment {
   })
   status: AppointmentStatus;
 
+  // 👇 NUEVO: precio final del trabajo (lo que se le cobra al cliente)
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+  final_price?: string;
+
+  // 👇 NUEVO (opcional): cuándo se completó realmente
+  @Column({ type: 'timestamp', nullable: true })
+  completed_at?: Date;
+
   @CreateDateColumn()
   created_at: Date;
 

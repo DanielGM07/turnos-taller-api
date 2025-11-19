@@ -35,7 +35,6 @@ export class MechanicReviewService {
     }
   }
 
-  // NEW
   async findAll(): Promise<MechanicReview[]> {
     try {
       return await this.repo.find({
@@ -47,7 +46,6 @@ export class MechanicReviewService {
     }
   }
 
-  // NEW
   async findOne(id: string): Promise<MechanicReview> {
     try {
       const review = await this.repo.findOne({
@@ -61,6 +59,19 @@ export class MechanicReviewService {
     }
   }
 
+  // 👇 NUEVO: todas las calificaciones de un mecánico
+  async listByMechanic(mechanicId: string): Promise<MechanicReview[]> {
+    // opcional: asegurarse de que existe el mecánico
+    const mech = await this.mechRepo.findOne({ where: { id: mechanicId } });
+    if (!mech) throw new NotFoundException(`Mechanic ${mechanicId} not found`);
+
+    return await this.repo.find({
+      where: { mechanic: { id: mechanicId } as any },
+      relations: ['mechanic', 'customer', 'appointment'],
+      order: { created_at: 'DESC' as any },
+    });
+  }
+
   async update(
     id: string,
     dto: UpdateMechanicReviewDto,
@@ -72,8 +83,13 @@ export class MechanicReviewService {
       } as any);
       if (!result.affected)
         throw new NotFoundException(`Review ${id} not found.`);
-      const updated = await this.repo.findOne({ where: { id } });
+
+      const updated = await this.repo.findOne({
+        where: { id },
+        relations: ['mechanic'],
+      });
       if (!updated) throw new NotFoundException(`Review ${id} not found.`);
+
       await this.recalculateAggregates(updated.mechanic.id);
       return updated;
     } catch (error) {
@@ -109,7 +125,7 @@ export class MechanicReviewService {
     const cntNum = Number(result?.cnt ?? 0);
 
     await this.mechRepo.update(mechanicId, {
-      average_rating: avgNum.toFixed(1),
+      average_rating: avgNum.toFixed(1), // p.ej. 7.3 / 10.0
       ratings_count: cntNum,
     } as any);
   }

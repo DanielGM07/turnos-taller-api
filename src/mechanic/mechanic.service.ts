@@ -65,24 +65,37 @@ export class MechanicService {
     }
   }
 
-  async update(id: string, dto: UpdateMechanicDto) {
-    try {
-      const partial: any = { ...dto };
-      if (dto.specialties !== undefined)
-        partial.specialties = dto.specialties.split(',').map((s) => s.trim());
-      const result = await this.mechRepo.update(id, partial);
-      if (!result.affected)
-        throw new NotFoundException(`Mechanic with ID ${id} not found.`);
-      const updated = await this.mechRepo.findOne({
-        where: { id },
-        relations: ['workshops'],
-      });
-      if (!updated)
-        throw new NotFoundException(`Mechanic with ID ${id} not found.`);
-      return updated;
-    } catch (error) {
-      throw error;
-    }
+  // async update(id: string, dto: UpdateMechanicDto) {
+  //   try {
+  //     const partial: any = { ...dto };
+  //     if (dto.specialties !== undefined)
+  //       partial.specialties = dto.specialties.split(',').map((s) => s.trim());
+  //     const result = await this.mechRepo.update(id, partial);
+  //     if (!result.affected)
+  //       throw new NotFoundException(`Mechanic with ID ${id} not found.`);
+  //     const updated = await this.mechRepo.findOne({
+  //       where: { id },
+  //       relations: ['workshops'],
+  //     });
+  //     if (!updated)
+  //       throw new NotFoundException(`Mechanic with ID ${id} not found.`);
+  //     return updated;
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
+
+  async update(id: string, dto: any) {
+    const mechanic = await this.mechRepo.findOne({
+      where: { id },
+      select: ['id', 'password'],
+    });
+
+    if (!mechanic) throw new NotFoundException('Mechanic not found');
+
+    Object.assign(mechanic, dto);
+
+    return await this.mechRepo.save(mechanic);
   }
 
   async remove(id: string) {

@@ -5,7 +5,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  BeforeInsert,
+  BeforeUpdate,
 } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 @Entity()
 export class Admin {
@@ -21,6 +24,9 @@ export class Admin {
   @Column({ unique: true })
   email: string;
 
+  @Column({ select: false })
+  password: string;
+
   @CreateDateColumn()
   created_at: Date;
 
@@ -29,4 +35,18 @@ export class Admin {
 
   @DeleteDateColumn()
   deleted_at?: Date;
+
+  @BeforeInsert()
+  async hashPasswordInsert() {
+    if (this.password) {
+      this.password = await bcrypt.hash(this.password, 10);
+    }
+  }
+
+  @BeforeUpdate()
+  async hashPasswordUpdate() {
+    if (this.password && !this.password.startsWith('$2')) {
+      this.password = await bcrypt.hash(this.password, 10);
+    }
+  }
 }

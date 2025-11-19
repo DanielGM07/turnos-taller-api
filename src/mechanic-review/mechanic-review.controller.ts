@@ -1,3 +1,4 @@
+// mechanic-review/mechanic-review.controller.ts
 import {
   Controller,
   Get,
@@ -6,12 +7,13 @@ import {
   Patch,
   Param,
   Delete,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { MechanicReviewService } from './mechanic-review.service';
 import { CreateMechanicReviewDto } from './dto/create-mechanic-review.dto';
 import { UpdateMechanicReviewDto } from './dto/update-mechanic-review.dto';
 
-@Controller('mechanic-reviews')
+@Controller('mechanic-review')
 export class MechanicReviewController {
   constructor(private readonly service: MechanicReviewService) {}
 
@@ -26,17 +28,25 @@ export class MechanicReviewController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id', ParseUUIDPipe) id: string) {
     return await this.service.findOne(id);
   }
 
+  @Get('mechanic/:mechanicId')
+  async listByMechanic(@Param('mechanicId', ParseUUIDPipe) mechanicId: string) {
+    return await this.service.listByMechanic(mechanicId);
+  }
+
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() dto: UpdateMechanicReviewDto) {
+  async update(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: UpdateMechanicReviewDto,
+  ) {
     return await this.service.update(id, dto);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
     return await this.service.remove(id);
   }
 }

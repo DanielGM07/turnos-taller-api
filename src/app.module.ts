@@ -14,6 +14,7 @@ import { ServiceModule } from './service/service.module';
 import { AppointmentModule } from './appointment/appointment.module';
 import { AdminModule } from './admin/admin.module';
 import { MechanicReviewModule } from './mechanic-review/mechanic-review.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -68,6 +69,8 @@ import { MechanicReviewModule } from './mechanic-review/mechanic-review.module';
     AdminModule,
 
     MechanicReviewModule,
+
+    AuthModule,
   ],
   providers: [
     {
